@@ -1,10 +1,11 @@
 {
     "name": "itiden/laravel-image",
-    "description": "",
+    "description": "Image handling for laravel blade templates. With Statamic support.",
     "keywords": [
         "laravel",
         "statamic",
         "image",
+        "blade",
         "package"
     ],
     "license": "MIT",

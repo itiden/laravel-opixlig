@@ -2,6 +2,8 @@
 
 This is a work in progress.
 
+`composer require itiden/laravel-image`
+
 ## Example
 
 ```php

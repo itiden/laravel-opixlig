@@ -33,7 +33,7 @@ php artisan vendor:publish --tag="itiden-opixlig-config"
 
 ## Configuration
 
-After publishing the config file, you can customize the following settings in `config/image.php`:
+After publishing the config file, you can customize the following settings in `config/opixlig.php`:
 
 ```php
 return [
@@ -120,16 +120,16 @@ $imageUrl = img('public/images/hero.jpg', 800, 600, ['fm' => 'webp', 'q' => 80])
 
 ### Available Props
 
-| Prop        | Type   | Default                             | Description                                                                   |
-| ----------- | ------ | ----------------------------------- | ----------------------------------------------------------------------------- |
-| src         | string | ''                                  | Path to the source image (including disk name e.g., 'public/images/file.jpg') |
-| sizes       | string | ''                                  | Media query sizes attribute for responsive images                             |
-| width       | number | ''                                  | Width of the image                                                            |
-| height      | number | ''                                  | Height of the image                                                           |
-| loading     | string | 'lazy'                              | Image loading strategy ('lazy', 'eager', 'auto')                              |
-| decoding    | string | 'async'                             | Image decoding strategy ('async', 'sync', 'auto')                             |
-| quality     | number | config('image.default_quality')     | Image quality (1-100)                                                         |
-| placeholder | string | config('image.default_placeholder') | Placeholder type ('empty' or 'blur')                                          |
+| Prop        | Type   | Default                               | Description                                                                   |
+| ----------- | ------ | ------------------------------------- | ----------------------------------------------------------------------------- |
+| src         | string | ''                                    | Path to the source image (including disk name e.g., 'public/images/file.jpg') |
+| sizes       | string | ''                                    | Media query sizes attribute for responsive images                             |
+| width       | number | ''                                    | Width of the image                                                            |
+| height      | number | ''                                    | Height of the image                                                           |
+| loading     | string | 'lazy'                                | Image loading strategy ('lazy', 'eager', 'auto')                              |
+| decoding    | string | 'async'                               | Image decoding strategy ('async', 'sync', 'auto')                             |
+| quality     | number | config('opixlig.default_quality')     | Image quality (1-100)                                                         |
+| placeholder | string | config('opixlig.default_placeholder') | Placeholder type ('empty' or 'blur')                                          |
 
 ### Image Manipulations
 

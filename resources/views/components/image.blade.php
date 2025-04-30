@@ -5,12 +5,12 @@
     'height' => '',
     'loading' => 'lazy',
     'decoding' => 'async', // async, sync, auto
-    'quality' => config('image.default_quality'),
-    'placeholder' => config('image.default_placeholder'), // empty or blur
+    'quality' => config('opixlig.default_quality'),
+    'placeholder' => config('opixlig.default_placeholder'), // empty or blur
 ])
 
 @php
-    $defaultWidths = config('image.default_widths');
+    $defaultWidths = config('opixlig.default_widths');
 
     $imgService = img($src, $width, $height, ['fm' => 'webp', 'q' => $quality]);
 
@@ -42,11 +42,9 @@
         $attrs = ['src' => $finalSrc];
     }
 
-    $base64 = $placeholder === 'blur' ? $imgService->placeholder() : null;
-    if ($base64) {
-        $attrs[
-            'style'
-        ] = "background-image:{$base64};background-size:cover;background-position:center;background-repeat:no-repeat;";
+    $placeholderCss = $imgService->placeholder($placeholder);
+    if ($placeholderCss) {
+        $attrs['style'] = $placeholderCss;
     }
 
 @endphp

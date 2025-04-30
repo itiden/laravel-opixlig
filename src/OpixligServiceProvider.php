@@ -12,11 +12,11 @@ final class OpixligServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/image.php',
-            'image'
+            __DIR__.'/../config/opixlig.php',
+            'opixlig'
         );
         $this->publishes([
-            __DIR__.'/../config/image.php' => config_path('image.php'),
+            __DIR__.'/../config/opxilig.php' => config_path('opixlig.php'),
         ], 'itiden-opixlig-config');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'opixlig');
@@ -32,9 +32,9 @@ final class OpixligServiceProvider extends ServiceProvider
     protected function mergeFilesystemLinks(): void
     {
         $links = Config::get('filesystems.links', []);
-        $cacheDir = Config::get('image.cache_dir');
+        $cacheDir = Config::get('opixlig.storage_folder');
 
-        $links[public_path(Config::get('image.public_folder'))] = storage_path($cacheDir);
+        $links[public_path(Config::get('opixlig.public_folder'))] = storage_path($cacheDir);
 
         Config::set('filesystems.links', $links);
     }

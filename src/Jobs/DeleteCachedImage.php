@@ -18,7 +18,7 @@ final class DeleteCachedImage implements ShouldQueue
 
     public function handle(): void
     {
-        $storageFolder = Config::get('image.storage_folder');
+        $storageFolder = Config::get('opixlig.storage_folder');
         $cacheDir = storage_path("$storageFolder/{$this->container}/{$this->path}");
 
         if (File::isDirectory($cacheDir)) {

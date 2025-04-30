@@ -29,8 +29,8 @@ final class ImageController
             $request->path(),
             array_merge($manipArray, ['s' => $request->query('s')])
         );
-        $publicFolder = Config::get('image.public_folder');
-        $storageFolder = Config::get('image.storage_folder');
+        $publicFolder = Config::get('opixlig.public_folder');
+        $storageFolder = Config::get('opixlig.storage_folder');
 
         [$container, $path] = explode('/', ltrim($fullpath, '/'), 2);
         $inputPath = Storage::disk($container)->path($path);
@@ -42,7 +42,7 @@ final class ImageController
         $glideServer = ServerFactory::create([
             'source' => dirname($inputPath),
             'cache' => $cacheDir,
-            'driver' => Config::get('image.driver'),
+            'driver' => Config::get('opixlig.driver'),
         ]);
 
         File::ensureDirectoryExists($outputFolder);

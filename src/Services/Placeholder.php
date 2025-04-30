@@ -19,7 +19,7 @@ final class Placeholder
         $glideServer = ServerFactory::create([
             'source' => dirname($inputPath),
             'cache' => Storage::path('framework/cache/images'),
-            'driver' => Config::get('image.driver'),
+            'driver' => Config::get('opixlig.driver'),
         ]);
 
         $base64 = $glideServer->getImageAsBase64($originalFilename, [

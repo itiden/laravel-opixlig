@@ -21,7 +21,7 @@ final class ImageService
 
         $manipString = $this->stringifyManipulations($manipulations);
         $trimmedSrc = ltrim($src, '/');
-        $publicFolder = Config::get('image.public_folder');
+        $publicFolder = Config::get('opixlig.public_folder');
         $path = "$publicFolder/$trimmedSrc/{$manipString}/{$filenameWithExtension}";
 
         $signature = SignatureFactory::create($signKey);

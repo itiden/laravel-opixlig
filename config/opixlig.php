@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'storage_folder' => 'app/.images',
+    'storage_folder' => 'app/opixlig',
     'public_folder' => 'images',
 
     'driver' => 'imagick',

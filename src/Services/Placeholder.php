@@ -10,7 +10,7 @@ final class Placeholder
 {
     public function __construct(private string $src, private int $width, private int $height) {}
 
-    public function generate()
+    public function generate(): string
     {
         [$container, $path] = explode('/', ltrim($this->src, '/'), 2);
         $inputPath = Storage::disk($container)->path($path);
@@ -32,7 +32,6 @@ final class Placeholder
             width: $this->width,
             height: $this->height,
             blurDataURL: $base64,
-            objectFit: $this->baseManipulations['fit'] ?? null
         );
 
         return "url(\"data:image/svg+xml;charset=utf-8,{$svgString}\")";

@@ -36,11 +36,11 @@ final class ImageService
             return '';
         }
 
-        $svg = new Placeholder(
+        $svg = (new Placeholder(
             src: $this->src,
             width: $this->width,
             height: $this->height,
-        )->generate();
+        ))->generate();
 
         $css = "background-image:{$svg};background-size:cover;background-position:center;background-repeat:no-repeat;";
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Itiden\LaravelImage;
+namespace Itiden\Opixlig;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use Itiden\LaravelImage\Listeners\StatamicAssetSubscriber;
+use Itiden\Opixlig\Listeners\StatamicAssetSubscriber;
 
 final class ImageServiceProvider extends ServiceProvider
 {
@@ -17,9 +17,9 @@ final class ImageServiceProvider extends ServiceProvider
         );
         $this->publishes([
             __DIR__.'/../config/image.php' => config_path('image.php'),
-        ], 'itiden-image-config');
+        ], 'itiden-opixlig-config');
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'image');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'opixlig');
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->mergeFilesystemLinks();
     }

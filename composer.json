@@ -1,6 +1,6 @@
 {
-    "name": "itiden/laravel-image",
-    "description": "Image handling for laravel blade templates. With Statamic support.",
+    "name": "itiden/opixlig",
+    "description": "Perfectly sized. Never pixelated.",
     "keywords": [
         "laravel",
         "statamic",
@@ -33,7 +33,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Itiden\\LaravelImage\\": "src/"
+            "Itiden\\Opixlig\\": "src/"
         },
         "files": [
             "src/Utils/utils.php"
@@ -56,7 +56,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Itiden\\LaravelImage\\ImageServiceProvider"
+                "Itiden\\Opixlig\\ImageServiceProvider"
             ]
         }
     },

@@ -1,6 +1,6 @@
 <?php
 
-namespace Itiden\LaravelImage\Jobs;
+namespace Itiden\Opixlig\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

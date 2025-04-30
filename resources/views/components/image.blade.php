@@ -51,5 +51,5 @@
 
 @endphp
 
-<img {{ $attributes->merge($attrs) }} sizes="{{ $sizes }}" loading="{{ $loading }}"
-    decoding="{{ $decoding }}" width="{{ $width }}" height="{{ $height }}">
+<img {{ $attributes->merge($attrs) }} loading="{{ $loading }}" decoding="{{ $decoding }}"
+    width="{{ $width }}" height="{{ $height }}">

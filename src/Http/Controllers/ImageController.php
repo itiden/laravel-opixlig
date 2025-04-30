@@ -1,6 +1,6 @@
 <?php
 
-namespace Itiden\LaravelImage\Http\Controllers;
+namespace Itiden\Opixlig\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;

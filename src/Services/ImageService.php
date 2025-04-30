@@ -1,6 +1,6 @@
 <?php
 
-namespace Itiden\LaravelImage\Services;
+namespace Itiden\Opixlig\Services;
 
 use Illuminate\Support\Facades\Config;
 use League\Glide\Signatures\SignatureFactory;

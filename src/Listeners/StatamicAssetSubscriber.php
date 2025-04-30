@@ -1,9 +1,9 @@
 <?php
 
-namespace Itiden\LaravelImage\Listeners;
+namespace Itiden\Opixlig\Listeners;
 
 use Illuminate\Events\Dispatcher;
-use Itiden\LaravelImage\Jobs\DeleteCachedImage;
+use Itiden\Opixlig\Jobs\DeleteCachedImage;
 
 final class StatamicAssetSubscriber
 {

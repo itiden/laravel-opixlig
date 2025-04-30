@@ -56,7 +56,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Itiden\\Opixlig\\ImageServiceProvider"
+                "Itiden\\Opixlig\\OpixligServiceProvider"
             ]
         }
     },

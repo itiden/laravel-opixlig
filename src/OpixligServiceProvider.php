@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Itiden\Opixlig\Listeners\StatamicAssetSubscriber;
 
-final class ImageServiceProvider extends ServiceProvider
+final class OpixligServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {

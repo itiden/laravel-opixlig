@@ -21,6 +21,7 @@
         $attrs = [
             'srcset' => $srcSet,
             'src' => $finalSrc,
+            'sizes' => $sizes,
         ];
     } elseif ($width) {
         $dprWidths = [

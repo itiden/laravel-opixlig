@@ -49,7 +49,7 @@ final class Placeholder
         string $blurDataURL = '',
         ?string $objectFit = null
     ): string {
-        $blurValue = 50;
+        $blurValue = 80;
         $svgWidth = $blurWidth ? $blurWidth * 40 : $width;
         $svgHeight = $blurHeight ? $blurHeight * 40 : $height;
 

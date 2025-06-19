@@ -7,12 +7,13 @@
     'decoding' => 'async', // async, sync, auto
     'quality' => config('opixlig.default_quality'),
     'placeholder' => config('opixlig.default_placeholder'), // empty or blur
+    'format' => config('opixlig.default_format'), // webp, avif, png, jpg, gif or heic.
 ])
 
 @php
     $defaultWidths = config('opixlig.default_widths');
 
-    $imgService = img($src, $width, $height, ['fm' => 'webp', 'q' => $quality]);
+    $imgService = img($src, $width, $height, ['fm' => $format, 'q' => $quality]);
 
     if ($sizes) {
         $srcSet = collect($defaultWidths)->map(fn($w) => $imgService->url(['w' => $w]) . " {$w}w")->implode(', ');
@@ -39,7 +40,7 @@
             'height' => $height,
         ];
     } else {
-        $finalSrc = $imgService->url(['fm' => 'webp']);
+        $finalSrc = $imgService->url(['fm' => $format]);
         $attrs = ['src' => $finalSrc];
     }
 

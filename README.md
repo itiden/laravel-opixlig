@@ -54,6 +54,9 @@ return [
 
     // Default image quality (1-100)
     'default_quality' => 75,
+
+    // Default image format ('webp', 'avif', 'png', 'jpg', 'pjpg', 'gif', 'heic')
+    'default_format' => 'webp',
 ];
 ```
 
@@ -130,6 +133,7 @@ $imageUrl = img('public/images/hero.jpg', 800, 600, ['fm' => 'webp', 'q' => 80])
 | decoding    | string | 'async'                               | Image decoding strategy ('async', 'sync', 'auto')                             |
 | quality     | number | config('opixlig.default_quality')     | Image quality (1-100)                                                         |
 | placeholder | string | config('opixlig.default_placeholder') | Placeholder type ('empty' or 'blur')                                          |
+| format      | string | config('opixlig.default_format')      | Image format ('jpg', 'pjpg', 'png', 'gif', 'webp', 'avif', 'heic'*). *heic only supported with Imagick driver |
 
 ### Image Manipulations
 
@@ -140,7 +144,7 @@ $imageUrl = img('public/images/hero.jpg', 800, 600)
     ->url([
         'w' => 800,               // Width
         'q' => 90,                // Quality
-        'fm' => 'webp',           // Format
+        'fm' => 'webp',           // Format (jpg, pjpg, png, gif, webp, avif, heic)
         'fit' => 'crop',          // Fit
         'crop' => 'center',       // Crop position
         // Other Glide parameters...

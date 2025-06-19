@@ -16,7 +16,7 @@ final class OpixligServiceProvider extends ServiceProvider
             'opixlig'
         );
         $this->publishes([
-            __DIR__.'/../config/opxilig.php' => config_path('opixlig.php'),
+            __DIR__.'/../config/opixlig.php' => config_path('opixlig.php'),
         ], 'itiden-opixlig-config');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'opixlig');

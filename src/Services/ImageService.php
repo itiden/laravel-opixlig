@@ -7,7 +7,11 @@ use League\Glide\Signatures\SignatureFactory;
 
 final class ImageService
 {
-    public function __construct(private string $src, private int $width, private int $height, private array $baseManipulations) {}
+    public function __construct(private string $src, private int $width, private int $height, private array $baseManipulations)
+    {
+        $path = parse_url($src, PHP_URL_PATH);
+        $this->src = is_string($path) ? $path : $src;
+    }
 
     public function url(array $manipulations): string
     {

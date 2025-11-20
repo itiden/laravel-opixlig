@@ -111,6 +111,18 @@ Use the Blade component in your views:
 />
 ```
 
+### Setting Fetch Priority
+
+```blade
+<x-opixlig::image
+    src="public/images/hero.jpg"
+    width="800"
+    height="600"
+    fetchpriority="high"
+    alt="High priority hero image"
+/>
+```
+
 ### Using the Helper Function
 
 You can also use the `img()` helper function directly:
@@ -123,17 +135,18 @@ $imageUrl = img('public/images/hero.jpg', 800, 600, ['fm' => 'webp', 'q' => 80])
 
 ### Available Props
 
-| Prop        | Type   | Default                               | Description                                                                   |
-| ----------- | ------ | ------------------------------------- | ----------------------------------------------------------------------------- |
-| src         | string | ''                                    | Path to the source image (including disk name e.g., 'public/images/file.jpg') |
-| sizes       | string | ''                                    | Media query sizes attribute for responsive images                             |
-| width       | number | ''                                    | Width of the image                                                            |
-| height      | number | ''                                    | Height of the image                                                           |
-| loading     | string | 'lazy'                                | Image loading strategy ('lazy', 'eager', 'auto')                              |
-| decoding    | string | 'async'                               | Image decoding strategy ('async', 'sync', 'auto')                             |
-| quality     | number | config('opixlig.default_quality')     | Image quality (1-100)                                                         |
-| placeholder | string | config('opixlig.default_placeholder') | Placeholder type ('empty' or 'blur')                                          |
-| format      | string | config('opixlig.default_format')      | Image format ('jpg', 'pjpg', 'png', 'gif', 'webp', 'avif', 'heic'*). *heic only supported with Imagick driver |
+| Prop          | Type   | Default                               | Description                                                                   |
+| ------------- | ------ | ------------------------------------- | ----------------------------------------------------------------------------- |
+| src           | string | ''                                    | Path to the source image (including disk name e.g., 'public/images/file.jpg') |
+| sizes         | string | ''                                    | Media query sizes attribute for responsive images                             |
+| width         | number | ''                                    | Width of the image                                                            |
+| height        | number | ''                                    | Height of the image                                                           |
+| loading       | string | 'lazy'                                | Image loading strategy ('lazy', 'eager', 'auto')                              |
+| decoding      | string | 'async'                               | Image decoding strategy ('async', 'sync', 'auto')                             |
+| fetchpriority | string | 'auto'                                | Fetch priority hint ('high', 'low', 'auto')                                   |
+| quality       | number | config('opixlig.default_quality')     | Image quality (1-100)                                                         |
+| placeholder   | string | config('opixlig.default_placeholder') | Placeholder type ('empty' or 'blur')                                          |
+| format        | string | config('opixlig.default_format')      | Image format ('jpg', 'pjpg', 'png', 'gif', 'webp', 'avif', 'heic'*). *heic only supported with Imagick driver |
 
 ### Image Manipulations
 

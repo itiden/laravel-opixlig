@@ -5,6 +5,7 @@
     'height' => '',
     'loading' => 'lazy',
     'decoding' => 'async', // async, sync, auto
+    'fetchpriority' => 'auto', // high, low, auto
     'quality' => config('opixlig.default_quality'),
     'placeholder' => config('opixlig.default_placeholder'), // empty or blur
     'format' => config('opixlig.default_format'), // webp, avif, png, jpg, gif or heic.
@@ -52,4 +53,4 @@
 @endphp
 
 <img {{ $attributes->merge($attrs) }} loading="{{ $loading }}" decoding="{{ $decoding }}"
-    width="{{ $width }}" height="{{ $height }}">
+    fetchpriority="{{ $fetchpriority }}" width="{{ $width }}" height="{{ $height }}">

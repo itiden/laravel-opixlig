@@ -26,9 +26,9 @@
     $imgService = img($src, $width, $height, $baseManipulations);
 
     if ($sizes) {
-        $srcSet = collect($defaultWidths)->map(fn($w) => $imgService->url(['w' => $w]) . " {$w}w")->implode(', ');
+        $srcSet = collect($defaultWidths)->map(fn($w) => $imgService->url(['w' => $w, 'h' => intval(round($w * $height / $width))]) . " {$w}w")->implode(', ');
 
-        $finalSrc = $imgService->url(['w' => max($defaultWidths)]);
+        $finalSrc = $imgService->url(['w' => max($defaultWidths), 'h' => intval(round(max($defaultWidths) * $height / $width))]);
         $attrs = [
             'srcset' => $srcSet,
             'src' => $finalSrc,
@@ -40,9 +40,9 @@
             2 => $width * 2,
         ];
 
-        $srcSet = collect($dprWidths)->map(fn($w, $dpr) => $imgService->url(['w' => $w]) . " {$dpr}x")->implode(', ');
+        $srcSet = collect($dprWidths)->map(fn($w, $dpr) => $imgService->url(['w' => $w, 'h' => $height * $dpr]) . " {$dpr}x")->implode(', ');
 
-        $finalSrc = $imgService->url(['w' => $width * 2]);
+        $finalSrc = $imgService->url(['w' => $width * 2, 'h' => $height * 2]);
         $attrs = [
             'src' => $finalSrc,
             'srcset' => $srcSet,

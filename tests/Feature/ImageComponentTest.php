@@ -68,7 +68,9 @@ it('generates responsive srcset with width descriptors when sizes is provided', 
         ->toContain('sizes="(max-width: 768px) 100vw, 50vw"')
         ->toContain('srcset="')
         ->toContain(' 384w')
-        ->toContain(' 3840w');
+        ->toContain('h-288')
+        ->toContain(' 3840w')
+        ->toContain('h-2880');
 });
 
 it('generates fixed width srcset with 1x and 2x descriptors', function (): void {
@@ -79,7 +81,9 @@ it('generates fixed width srcset with 1x and 2x descriptors', function (): void 
         ->toContain(' 1x')
         ->toContain(' 2x')
         ->toContain('w-300')
-        ->toContain('w-600');
+        ->toContain('h-150')
+        ->toContain('w-600')
+        ->toContain('h-300');
 });
 
 it('renders loading and decoding attributes', function (): void {

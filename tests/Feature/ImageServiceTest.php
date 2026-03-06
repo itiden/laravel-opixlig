@@ -40,7 +40,7 @@ it('builds a signed URL with merged and sorted manipulations', function (): void
     ];
 
     expect($path)
-        ->toBe('/images/public/images/hero.jpg/blur-10-fit-crop-fm-webp-q-60-w-800/hero.webp');
+        ->toBe('/images/public/images/hero.jpg/blur-10_fit-crop_fm-webp_q-60_w-800/hero.webp');
 
     $expectedSignature = SignatureFactory::create(Config::get('app.key'))
         ->addSignature((string) $path, $expectedManipulations)['s'];
@@ -61,7 +61,7 @@ it('handles URL-style src values via parse_url in the constructor', function ():
     $path = parse_url($url, PHP_URL_PATH);
 
     expect($path)
-        ->toBe('/images/public/gallery/photo.jpeg/fm-avif-w-640/photo.avif');
+        ->toBe('/images/public/gallery/photo.jpeg/fm-avif_w-640/photo.avif');
 });
 
 it('returns an empty placeholder for empty type', function (): void {

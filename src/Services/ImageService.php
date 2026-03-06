@@ -57,15 +57,14 @@ final class ImageService
 
         return collect($manipulations)
             ->map(fn ($value, $key) => "{$key}-{$value}")
-            ->implode('-');
+            ->implode('_');
     }
 
     private function parseManipulationsString(string $manipulations): array
     {
-        $manipulations = collect(explode('-', $manipulations))
-            ->chunk(2)
+        $manipulations = collect(explode('_', $manipulations))
             ->mapWithKeys(function ($pair) {
-                [$key, $value] = $pair->values();
+                [$key, $value] = explode('-', $pair, 2);
 
                 return [$key => $value];
             })

@@ -15,10 +15,9 @@ final class ImageController
     {
         $signKey = Config::get('app.key');
 
-        $manipArray = collect(explode('-', $manipulations))
-            ->chunk(2)
+        $manipArray = collect(explode('_', $manipulations))
             ->mapWithKeys(function ($pair) {
-                [$key, $value] = $pair->values();
+                [$key, $value] = explode('-', $pair, 2);
 
                 return [$key => $value];
             })

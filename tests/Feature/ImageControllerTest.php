@@ -33,7 +33,7 @@ it('rejects requests with invalid signature', function (): void {
 
     $this->withoutExceptionHandling();
 
-    $this->get("/{$publicFolder}/public/images/photo.jpg/fm-webp-q-75-w-800/photo.webp?s=invalidsignature");
+    $this->get("/{$publicFolder}/public/images/photo.jpg/fm-webp_q-75_w-800/photo.webp?s=invalidsignature");
 })->throws(\League\Glide\Signatures\SignatureException::class);
 
 it('serves an image with multiple manipulations in the URL', function (): void {

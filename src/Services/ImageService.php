@@ -3,6 +3,7 @@
 namespace Itiden\Opixlig\Services;
 
 use Illuminate\Support\Facades\Config;
+use Itiden\Opixlig\Utils\Manipulations;
 use League\Glide\Signatures\SignatureFactory;
 
 final class ImageService
@@ -23,7 +24,7 @@ final class ImageService
         $extension = $manipulations['fm'] ?? pathinfo($src, PATHINFO_EXTENSION);
         $filenameWithExtension = "{$filename}.{$extension}";
 
-        $manipString = $this->stringifyManipulations($manipulations);
+        $manipString = Manipulations::stringify($manipulations);
         $trimmedSrc = ltrim($src, '/');
         $publicFolder = Config::get('opixlig.public_folder');
         $path = "$publicFolder/$trimmedSrc/{$manipString}/{$filenameWithExtension}";
@@ -49,29 +50,5 @@ final class ImageService
         $css = "background-image:{$svg};background-size:cover;background-position:center;background-repeat:no-repeat;";
 
         return $css;
-    }
-
-    private function stringifyManipulations(array $manipulations): string
-    {
-        ksort($manipulations);
-
-        return collect($manipulations)
-            ->map(fn ($value, $key) => "{$key}-{$value}")
-            ->implode('_');
-    }
-
-    private function parseManipulationsString(string $manipulations): array
-    {
-        $manipulations = collect(explode('_', $manipulations))
-            ->mapWithKeys(function ($pair) {
-                [$key, $value] = explode('-', $pair, 2);
-
-                return [$key => $value];
-            })
-            ->toArray();
-
-        ksort($manipulations);
-
-        return $manipulations;
     }
 }

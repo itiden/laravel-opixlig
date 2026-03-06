@@ -8,12 +8,22 @@
     'quality' => config('opixlig.default_quality'),
     'placeholder' => config('opixlig.default_placeholder'), // empty or blur
     'format' => config('opixlig.default_format'), // webp, avif, png, jpg, gif or heic.
+    'fit' => '', // contain, max, fill, fill-max, stretch, crop, crop-center, crop-top, crop-50-50-1, etc.
+    'manipulations' => [], // Additional Glide manipulations. E.g. ['blur' => 50, 'filt' => 'greyscale'].
 ])
 
 @php
     $defaultWidths = config('opixlig.default_widths');
 
-    $imgService = img($src, $width, $height, ['fm' => $format, 'q' => $quality]);
+    $baseManipulations = array_filter([
+        'fm' => $format,
+        'q' => $quality,
+        'fit' => $fit,
+    ], fn ($value) => $value !== '' && $value !== null);
+
+    $baseManipulations = array_merge($baseManipulations, $manipulations);
+
+    $imgService = img($src, $width, $height, $baseManipulations);
 
     if ($sizes) {
         $srcSet = collect($defaultWidths)->map(fn($w) => $imgService->url(['w' => $w]) . " {$w}w")->implode(', ');

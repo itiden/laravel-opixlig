@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Itiden\Opixlig\Utils\Manipulations;
 use League\Glide\ServerFactory;
 use League\Glide\Signatures\SignatureFactory;
 
@@ -15,15 +16,7 @@ final class ImageController
     {
         $signKey = Config::get('app.key');
 
-        $manipArray = collect(explode('-', $manipulations))
-            ->chunk(2)
-            ->mapWithKeys(function ($pair) {
-                [$key, $value] = $pair->values();
-
-                return [$key => $value];
-            })
-            ->toArray();
-        ksort($manipArray);
+        $manipArray = Manipulations::parse($manipulations);
 
         SignatureFactory::create($signKey)->validateRequest(
             $request->path(),

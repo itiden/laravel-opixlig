@@ -17,7 +17,11 @@ final class Manipulations
         ksort($manipulations);
 
         return collect($manipulations)
-            ->map(fn ($value, $key) => "{$key}-{$value}")
+            ->map(function (mixed $value, string $key): string {
+                assert(is_string($value) || is_int($value));
+
+                return "{$key}-{$value}";
+            })
             ->implode('_');
     }
 
@@ -29,7 +33,7 @@ final class Manipulations
     public static function parse(string $manipulations): array
     {
         $manipulations = collect(explode('_', $manipulations))
-            ->mapWithKeys(function ($pair) {
+            ->mapWithKeys(function (string $pair): array {
                 [$key, $value] = explode('-', $pair, 2);
 
                 return [$key => $value];
@@ -38,6 +42,7 @@ final class Manipulations
 
         ksort($manipulations);
 
+        /** @var array<string, string> $manipulations */
         return $manipulations;
     }
 }

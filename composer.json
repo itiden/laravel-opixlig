@@ -68,6 +68,7 @@
         "test:lint": "pint --test",
         "test:types": "phpstan analyse --ansi",
         "test:unit": "pest --colors=always --coverage --parallel --min=100",
+        "test:docker": "docker run --rm -v $(pwd):/app -w /app php:8.4-cli bash -c 'apt-get update -qq > /dev/null 2>&1 && apt-get install -y -qq libpng-dev libjpeg-dev libfreetype6-dev > /dev/null 2>&1 && docker-php-ext-configure gd --with-freetype --with-jpeg > /dev/null 2>&1 && docker-php-ext-install -j$(nproc) gd > /dev/null 2>&1 && pecl install pcov > /dev/null 2>&1 && docker-php-ext-enable pcov > /dev/null 2>&1 && php vendor/bin/pest --colors=always --coverage --parallel --min=100'",
         "test": [
             "@test:refacto",
             "@test:lint",

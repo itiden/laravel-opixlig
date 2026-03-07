@@ -8,14 +8,17 @@ use League\Glide\Signatures\SignatureFactory;
 
 final class ImageService
 {
-    public function __construct(private string $src, private int $width, private int $height, private array $baseManipulations)
+    /** @param array<string, string|int> $baseManipulations */
+    public function __construct(private string $src, private readonly int $width, private readonly int $height, private readonly array $baseManipulations)
     {
         $path = parse_url($src, PHP_URL_PATH);
         $this->src = is_string($path) ? $path : $src;
     }
 
+    /** @param array<string, string|int> $manipulations */
     public function url(array $manipulations): string
     {
+        /** @var string $signKey */
         $signKey = Config::get('app.key');
         $src = $this->src;
         $manipulations = array_merge($this->baseManipulations, $manipulations);
@@ -26,6 +29,7 @@ final class ImageService
 
         $manipString = Manipulations::stringify($manipulations);
         $trimmedSrc = ltrim($src, '/');
+        /** @var string $publicFolder */
         $publicFolder = Config::get('opixlig.public_folder');
         $path = "$publicFolder/$trimmedSrc/{$manipString}/{$filenameWithExtension}";
 
@@ -47,8 +51,6 @@ final class ImageService
             height: $this->height,
         ))->generate();
 
-        $css = "background-image:{$svg};background-size:cover;background-position:center;background-repeat:no-repeat;";
-
-        return $css;
+        return "background-image:{$svg};background-size:cover;background-position:center;background-repeat:no-repeat;";
     }
 }

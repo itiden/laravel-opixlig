@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('img')) {
+if (! function_exists('img')) { // @codeCoverageIgnore
     /** @param array<string, string|int> $baseManipulations */
     function img(string $src, int $width, int $height, array $baseManipulations = []): \Itiden\Opixlig\Services\ImageService
     {

@@ -23,7 +23,7 @@
 
     $baseManipulations = array_merge($baseManipulations, $manipulations);
 
-    $imgService = img($src, $width, $height, $baseManipulations);
+    $imgService = img($src, (int) $width, (int) $height, $baseManipulations);
 
     if ($sizes) {
         $srcSet = collect($defaultWidths)->map(fn($w) => $imgService->url(['w' => $w, 'h' => intval(round($w * $height / $width))]) . " {$w}w")->implode(', ');

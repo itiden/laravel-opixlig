@@ -24,17 +24,21 @@ final class OpixligServiceProvider extends ServiceProvider
         $this->mergeFilesystemLinks();
     }
 
-    public function register()
+    public function register(): void
     {
         Event::subscribe(StatamicAssetSubscriber::class);
     }
 
-    protected function mergeFilesystemLinks(): void
+    private function mergeFilesystemLinks(): void
     {
+        /** @var array<string, string> $links */
         $links = Config::get('filesystems.links', []);
+        /** @var string $cacheDir */
         $cacheDir = Config::get('opixlig.storage_folder');
 
-        $links[public_path(Config::get('opixlig.public_folder'))] = storage_path($cacheDir);
+        /** @var string $publicFolder */
+        $publicFolder = Config::get('opixlig.public_folder');
+        $links[public_path($publicFolder)] = storage_path($cacheDir);
 
         Config::set('filesystems.links', $links);
     }

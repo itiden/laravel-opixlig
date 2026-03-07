@@ -12,8 +12,9 @@ use League\Glide\Signatures\SignatureFactory;
 
 final class ImageController
 {
-    public function __invoke(Request $request, string $fullpath, string $manipulations, string $filename)
+    public function __invoke(Request $request, string $fullpath, string $manipulations, string $filename): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
+        /** @var string $signKey */
         $signKey = Config::get('app.key');
 
         $manipArray = Manipulations::parse($manipulations);
@@ -22,7 +23,9 @@ final class ImageController
             $request->path(),
             array_merge($manipArray, ['s' => $request->query('s')])
         );
+        /** @var string $publicFolder */
         $publicFolder = Config::get('opixlig.public_folder');
+        /** @var string $storageFolder */
         $storageFolder = Config::get('opixlig.storage_folder');
 
         [$container, $path] = explode('/', ltrim($fullpath, '/'), 2);

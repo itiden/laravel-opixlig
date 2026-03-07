@@ -7,8 +7,9 @@ use Itiden\Opixlig\Jobs\DeleteCachedImage;
 
 final class StatamicAssetSubscriber
 {
-    public function handle($event): void
+    public function handle(object $event): void
     {
+        /** @var object&\stdClass $event */
         $asset = $event->asset;
         $path = $asset->path;
         $isImage = $asset->is_image;
@@ -21,16 +22,16 @@ final class StatamicAssetSubscriber
         dispatch(new DeleteCachedImage($container, $path));
     }
 
-    public function subscribe(Dispatcher $events)
+    public function subscribe(Dispatcher $events): void
     {
         $events->listen(
             'Statamic\Events\AssetDeleted',
-            [StatamicAssetSubscriber::class, 'handle']
+            (new StatamicAssetSubscriber)->handle(...)
         );
 
         $events->listen(
             'Statamic\Events\AssetSaved',
-            [StatamicAssetSubscriber::class, 'handle']
+            (new StatamicAssetSubscriber)->handle(...)
         );
 
         // Statamic\Events\AssetFolderDeleted

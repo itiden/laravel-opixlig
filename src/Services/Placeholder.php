@@ -8,7 +8,7 @@ use League\Glide\ServerFactory;
 
 final class Placeholder
 {
-    public function __construct(private string $src, private int $width, private int $height) {}
+    public function __construct(private readonly string $src, private readonly int $width, private readonly int $height) {}
 
     public function generate(): string
     {
@@ -50,12 +50,12 @@ final class Placeholder
         ?string $objectFit = null
     ): string {
         $blurValue = 80;
-        $svgWidth = $blurWidth ? $blurWidth * 40 : $width;
-        $svgHeight = $blurHeight ? $blurHeight * 40 : $height;
+        $svgWidth = $blurWidth !== null && $blurWidth !== 0 ? $blurWidth * 40 : $width;
+        $svgHeight = $blurHeight !== null && $blurHeight !== 0 ? $blurHeight * 40 : $height;
 
         $viewBox = ($svgWidth && $svgHeight) ? "viewBox='0 0 $svgWidth $svgHeight'" : '';
 
-        $preserveAspectRatio = $viewBox
+        $preserveAspectRatio = $viewBox !== '' && $viewBox !== '0'
             ? 'none'
             : ($objectFit === 'contain'
                 ? 'xMidYMid'

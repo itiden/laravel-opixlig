@@ -107,3 +107,38 @@ it('passes additional HTML attributes through to the img tag', function (): void
         ->toContain('class="rounded"')
         ->toContain('id="hero"');
 });
+
+it('renders src-only output when no width or sizes are provided', function (): void {
+    $html = Blade::render('<x-opixlig::image src="public/images/example.jpg" />');
+
+    expect($html)
+        ->toContain('src="http://localhost/images/public/images/example.jpg/')
+        ->toContain('fm-webp')
+        ->not->toContain('srcset=');
+});
+
+it('renders blur placeholder style attribute when placeholder is blur', function (): void {
+    if (! function_exists('imagecreatetruecolor')) {
+        $this->markTestSkipped('GD extension is required.');
+    }
+
+    $resource = imagecreatetruecolor(10, 10);
+    $color = imagecolorallocate($resource, 200, 100, 50);
+    imagefill($resource, 0, 0, $color);
+
+    ob_start();
+    imagepng($resource);
+    $image = (string) ob_get_clean();
+    imagedestroy($resource);
+
+    \Illuminate\Support\Facades\Storage::disk('public')->put('blade-tests/photo.png', $image);
+
+    $html = Blade::render('<x-opixlig::image src="public/blade-tests/photo.png" width="200" height="100" placeholder="blur" />');
+
+    expect($html)
+        ->toContain('style="background-image:url(')
+        ->toContain('background-size:cover')
+        ->toContain('background-position:center');
+
+    \Illuminate\Support\Facades\Storage::disk('public')->deleteDirectory('blade-tests');
+});

@@ -2,6 +2,7 @@
 
 namespace Itiden\Opixlig\Utils;
 
+use InvalidArgumentException;
 use Itiden\Opixlig\Services\ImageService;
 
 final class ImageAttributes
@@ -14,6 +15,12 @@ final class ImageAttributes
     {
         $width = $resolved['w'];
         $height = $resolved['h'];
+
+        if ($sizes !== '' && ($width === 0 || $height === 0)) {
+            throw new InvalidArgumentException(
+                'Opixlig requires both width and height when sizes is provided for responsive images.'
+            );
+        }
 
         if ($sizes !== '' && $width !== 0 && $height !== 0) {
             return self::responsiveAttrs($service, $resolved, $sizes);

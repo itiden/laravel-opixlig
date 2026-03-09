@@ -42,6 +42,9 @@ final class Manipulations
 
         $w = self::resolveInt($overrides, $presetValues, 'w');
         $h = self::resolveInt($overrides, $presetValues, 'h');
+
+        self::validateDimensions($w, $h);
+
         $fm = self::resolveString($overrides, $presetValues, 'fm', Config::get('opixlig.defaults.format', 'webp'));
         $q = $overrides['q'] ?? $presetValues['q'] ?? Config::get('opixlig.defaults.quality', 75);
         $q = is_int($q) || is_string($q) ? $q : 75;
@@ -50,9 +53,14 @@ final class Manipulations
 
         /** @var list<int> $defaultWidths */
         $defaultWidths = Config::get('opixlig.defaults.widths', []);
-        $widths = isset($presetValues['widths']) && is_array($presetValues['widths'])
-            ? $presetValues['widths']
-            : $defaultWidths;
+
+        $widths = match (true) {
+            isset($overrides['widths']) && is_array($overrides['widths']) => $overrides['widths'],
+            isset($presetValues['widths']) && is_array($presetValues['widths']) => $presetValues['widths'],
+            default => $defaultWidths,
+        };
+
+        self::validateWidths($widths);
 
         $presetManipulations = collect($presetValues)->except(self::RESOLVED_KEYS)->all();
         $overrideManipulations = collect($overrides)->except(self::RESOLVED_KEYS)->all();
@@ -125,6 +133,42 @@ final class Manipulations
 
         /** @var array<string, string> $manipulations */
         return $manipulations;
+    }
+
+    /**
+     * Validate that dimensions are either both non-zero or both zero.
+     *
+     * @throws InvalidArgumentException
+     */
+    private static function validateDimensions(int $w, int $h): void
+    {
+        if (($w === 0) !== ($h === 0)) {
+            throw new InvalidArgumentException(
+                'Opixlig requires both width and height to be set together, or neither. Received: w='.$w.', h='.$h.'.'
+            );
+        }
+    }
+
+    /**
+     * Validate that widths is a non-empty list of positive integers.
+     *
+     * @param  array<mixed>  $widths
+     *
+     * @throws InvalidArgumentException
+     */
+    private static function validateWidths(array $widths): void
+    {
+        if ($widths === []) {
+            throw new InvalidArgumentException('Opixlig widths must be a non-empty list of positive integers.');
+        }
+
+        foreach ($widths as $width) {
+            if (! is_int($width) || $width <= 0) {
+                throw new InvalidArgumentException(
+                    'Opixlig widths must be a non-empty list of positive integers. Got: '.json_encode($width).'.'
+                );
+            }
+        }
     }
 
     /**

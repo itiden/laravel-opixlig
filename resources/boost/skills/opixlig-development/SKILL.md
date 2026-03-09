@@ -29,7 +29,7 @@ The `src` prop must include the storage **disk name** as the first path segment:
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `src` | string | required | Path including disk name prefix (e.g. `public/images/file.jpg`) |
-| `alt` | string | required | Alt text for the image |
+| `alt` | string | — | Alt text for the image (not enforced at runtime, but required for accessibility) |
 | `width` | number | — | Must be set with `height`. Omit both for a plain `<img>` |
 | `height` | number | — | Must be set with `width`. Omit both for a plain `<img>` |
 | `preset` | string | — | Name of a preset from `config('opixlig.presets')` |
@@ -38,7 +38,7 @@ The `src` prop must include the storage **disk name** as the first path segment:
 | `decoding` | string | `'async'` | `'async'`, `'sync'`, `'auto'` |
 | `quality` | number | config default (75) | Image quality 1–100 |
 | `placeholder` | string | config default (`'empty'`) | `'empty'` or `'blur'` |
-| `format` | string | config default (`'webp'`) | `'webp'`, `'avif'`, `'jpg'`, `'pjpg'`, `'png'`, `'gif'`, `'heic'` |
+| `format` | string | config default (`'webp'`) | `'webp'`, `'avif'`, `'jpg'`, `'pjpg'`, `'png'`, `'gif'`, `'heic'` (HEIC requires Imagick driver) |
 | `fit` | string | — | Resize/crop method (see below) |
 | `manipulations` | array | `[]` | Additional Glide params as key-value pairs |
 

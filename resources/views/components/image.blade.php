@@ -5,15 +5,15 @@
     'height' => '',
     'loading' => 'lazy',
     'decoding' => 'async', // async, sync, auto
-    'quality' => config('opixlig.default_quality'),
-    'placeholder' => config('opixlig.default_placeholder'), // empty or blur
-    'format' => config('opixlig.default_format'), // webp, avif, png, jpg, gif or heic.
+    'quality' => config('opixlig.defaults.quality'),
+    'placeholder' => config('opixlig.defaults.placeholder'), // empty or blur
+    'format' => config('opixlig.defaults.format'), // webp, avif, png, jpg, gif or heic.
     'fit' => '', // contain, max, fill, fill-max, stretch, crop, crop-center, crop-top, crop-50-50-1, etc.
     'manipulations' => [], // Additional Glide manipulations. E.g. ['blur' => 50, 'filt' => 'greyscale'].
 ])
 
 @php
-    $defaultWidths = config('opixlig.default_widths');
+    $defaultWidths = config('opixlig.defaults.widths');
 
     $baseManipulations = array_filter([
         'fm' => $format,

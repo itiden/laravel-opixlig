@@ -6,8 +6,10 @@ return [
 
     'driver' => 'imagick',
 
-    'default_widths' => [384, 640, 828, 1200, 1920, 2048, 3840],
-    'default_placeholder' => 'empty',
-    'default_quality' => 75,
-    'default_format' => 'webp',
+    'defaults' => [
+        'widths' => [384, 640, 828, 1200, 1920, 2048, 3840],
+        'placeholder' => 'empty',
+        'quality' => 75,
+        'format' => 'webp',
+    ],
 ];

@@ -366,3 +366,65 @@ it('ignores null overrides and keeps preset values', function (): void {
         ],
     ]);
 });
+
+it('throws when only width is provided without height', function (): void {
+    expect(fn () => Manipulations::resolve('', ['w' => 800]))
+        ->toThrow(\InvalidArgumentException::class, 'both width and height');
+});
+
+it('throws when only height is provided without width', function (): void {
+    expect(fn () => Manipulations::resolve('', ['h' => 600]))
+        ->toThrow(\InvalidArgumentException::class, 'both width and height');
+});
+
+it('does not throw when both width and height are zero', function (): void {
+    $result = Manipulations::resolve('');
+
+    expect($result['w'])->toBe(0)
+        ->and($result['h'])->toBe(0);
+});
+
+it('does not throw when both width and height are provided', function (): void {
+    $result = Manipulations::resolve('', ['w' => 800, 'h' => 600]);
+
+    expect($result['w'])->toBe(800)
+        ->and($result['h'])->toBe(600);
+});
+
+it('throws when widths is an empty array', function (): void {
+    expect(fn () => Manipulations::resolve('', ['widths' => []]))
+        ->toThrow(\InvalidArgumentException::class, 'non-empty list');
+});
+
+it('throws when widths contains a non-integer value', function (): void {
+    expect(fn () => Manipulations::resolve('', ['widths' => [320, 'large', 1024]]))
+        ->toThrow(\InvalidArgumentException::class, 'non-empty list of positive integers');
+});
+
+it('throws when widths contains a zero value', function (): void {
+    expect(fn () => Manipulations::resolve('', ['widths' => [0, 640]]))
+        ->toThrow(\InvalidArgumentException::class, 'non-empty list of positive integers');
+});
+
+it('throws when widths contains a negative value', function (): void {
+    expect(fn () => Manipulations::resolve('', ['widths' => [-100, 640]]))
+        ->toThrow(\InvalidArgumentException::class, 'non-empty list of positive integers');
+});
+
+it('allows inline widths override to take precedence over preset widths', function (): void {
+    config()->set('opixlig.presets.wide', [
+        'w' => 1200,
+        'h' => 600,
+        'widths' => [600, 1200],
+    ]);
+
+    $result = Manipulations::resolve('wide', ['widths' => [300, 600]]);
+
+    expect($result['widths'])->toBe([300, 600]);
+});
+
+it('allows inline widths override to take precedence over config default widths', function (): void {
+    $result = Manipulations::resolve('', ['widths' => [320, 768]]);
+
+    expect($result['widths'])->toBe([320, 768]);
+});

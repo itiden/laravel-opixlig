@@ -174,3 +174,47 @@ it('adds blur placeholder style when placeholder is blur', function (): void {
 
     Storage::disk('public')->deleteDirectory('image-attributes');
 });
+
+it('throws when sizes is provided but width is zero', function (): void {
+    $service = new ImageService(
+        src: 'public/images/test.jpg',
+        width: 0,
+        height: 600,
+        baseManipulations: ['fm' => 'webp', 'q' => 75],
+    );
+
+    $resolved = [
+        'w' => 0,
+        'h' => 600,
+        'fm' => 'webp',
+        'q' => 75,
+        'fit' => '',
+        'placeholder' => 'empty',
+        'widths' => [384, 640, 828],
+        'manipulations' => ['fm' => 'webp', 'q' => 75],
+    ];
+
+    ImageAttributes::from($service, $resolved, '100vw');
+})->throws(InvalidArgumentException::class, 'Opixlig requires both width and height when sizes is provided for responsive images.');
+
+it('throws when sizes is provided but height is zero', function (): void {
+    $service = new ImageService(
+        src: 'public/images/test.jpg',
+        width: 800,
+        height: 0,
+        baseManipulations: ['fm' => 'webp', 'q' => 75],
+    );
+
+    $resolved = [
+        'w' => 800,
+        'h' => 0,
+        'fm' => 'webp',
+        'q' => 75,
+        'fit' => '',
+        'placeholder' => 'empty',
+        'widths' => [384, 640, 828],
+        'manipulations' => ['fm' => 'webp', 'q' => 75],
+    ];
+
+    ImageAttributes::from($service, $resolved, '100vw');
+})->throws(InvalidArgumentException::class, 'Opixlig requires both width and height when sizes is provided for responsive images.');

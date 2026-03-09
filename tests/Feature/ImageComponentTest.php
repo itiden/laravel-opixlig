@@ -212,6 +212,14 @@ it('throws exception for undefined preset', function (): void {
     Blade::render('<x-opixlig::image src="public/images/example.jpg" preset="nonexistent" />');
 })->throws(Illuminate\View\ViewException::class, "Opixlig preset 'nonexistent' is not defined.");
 
+it('throws when only width is provided without height', function (): void {
+    Blade::render('<x-opixlig::image src="public/images/example.jpg" width="800" />');
+})->throws(Illuminate\View\ViewException::class, 'Opixlig requires both width and height to be set together, or neither.');
+
+it('throws when only height is provided without width', function (): void {
+    Blade::render('<x-opixlig::image src="public/images/example.jpg" height="600" />');
+})->throws(Illuminate\View\ViewException::class, 'Opixlig requires both width and height to be set together, or neither.');
+
 it('passes through extra glide manipulations from preset', function (): void {
     config()->set('opixlig.presets.stylized', [
         'w' => 300,

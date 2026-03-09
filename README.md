@@ -90,6 +90,8 @@ Use the Blade component in your views:
 />
 ```
 
+> **Note:** `width` and `height` must always be provided together. Supplying only one will throw an `InvalidArgumentException`. Omitting both is valid and renders a plain `<img>` with no srcset.
+
 ### Responsive Images with Custom Sizes
 
 ```blade
@@ -229,8 +231,8 @@ $avatarUrl = img('public/images/profile.jpg', preset: 'avatar')->url(['w' => 64]
 | src           | string | ''                                     | Path to the source image (including disk name e.g., 'public/images/file.jpg')                                                                                                                                             |
 | preset        | string | ''                                     | Name of a preset defined in `config('opixlig.presets')`. Inline props override preset values.                                                                                                                             |
 | sizes         | string | ''                                     | Media query sizes attribute for responsive images                                                                                                                                                                         |
-| width         | number | ''                                     | Width of the image                                                                                                                                                                                                        |
-| height        | number | ''                                     | Height of the image                                                                                                                                                                                                       |
+| width         | number | ''                                     | Width of the image. Must be provided together with `height` — supplying only one throws an error.                                                                                                                          |
+| height        | number | ''                                     | Height of the image. Must be provided together with `width` — supplying only one throws an error.                                                                                                                          |
 | loading       | string | 'lazy'                                 | Image loading strategy ('lazy', 'eager', 'auto')                                                                                                                                                                          |
 | decoding      | string | 'async'                                | Image decoding strategy ('async', 'sync', 'auto')                                                                                                                                                                         |
 | quality       | number | config('opixlig.defaults.quality')     | Image quality (1-100)                                                                                                                                                                                                     |

@@ -142,3 +142,88 @@ it('renders blur placeholder style attribute when placeholder is blur', function
 
     \Illuminate\Support\Facades\Storage::disk('public')->deleteDirectory('blade-tests');
 });
+
+it('applies preset width and height to the image', function (): void {
+    config()->set('opixlig.presets.thumb', [
+        'w' => 150,
+        'h' => 100,
+        'q' => 60,
+        'fit' => 'crop-center',
+    ]);
+
+    $html = Blade::render('<x-opixlig::image src="public/images/example.jpg" preset="thumb" />');
+
+    expect($html)
+        ->toContain('width="150"')
+        ->toContain('height="100"')
+        ->toContain('q-60')
+        ->toContain('fit-crop-center');
+});
+
+it('applies preset using friendly aliases', function (): void {
+    config()->set('opixlig.presets.hero', [
+        'width' => 1200,
+        'height' => 630,
+        'quality' => 85,
+        'format' => 'avif',
+    ]);
+
+    $html = Blade::render('<x-opixlig::image src="public/images/example.jpg" preset="hero" />');
+
+    expect($html)
+        ->toContain('width="1200"')
+        ->toContain('height="630"')
+        ->toContain('q-85')
+        ->toContain('fm-avif');
+});
+
+it('allows inline props to override preset values', function (): void {
+    config()->set('opixlig.presets.thumb', [
+        'w' => 150,
+        'h' => 100,
+        'q' => 60,
+        'fm' => 'webp',
+    ]);
+
+    $html = Blade::render('<x-opixlig::image src="public/images/example.jpg" preset="thumb" quality="90" format="avif" />');
+
+    expect($html)
+        ->toContain('q-90')
+        ->toContain('fm-avif')
+        ->toContain('width="150"');
+});
+
+it('uses preset widths for responsive srcset', function (): void {
+    config()->set('opixlig.presets.banner', [
+        'widths' => [400, 800],
+        'w' => 800,
+        'h' => 400,
+    ]);
+
+    $html = Blade::render('<x-opixlig::image src="public/images/example.jpg" preset="banner" sizes="100vw" />');
+
+    expect($html)
+        ->toContain(' 400w')
+        ->toContain(' 800w')
+        ->not->toContain(' 3840w');
+});
+
+it('throws exception for undefined preset', function (): void {
+    Blade::render('<x-opixlig::image src="public/images/example.jpg" preset="nonexistent" />');
+})->throws(Illuminate\View\ViewException::class, "Opixlig preset 'nonexistent' is not defined.");
+
+it('passes through extra glide manipulations from preset', function (): void {
+    config()->set('opixlig.presets.stylized', [
+        'w' => 300,
+        'h' => 200,
+        'blur' => 10,
+        'filt' => 'greyscale',
+    ]);
+
+    $html = Blade::render('<x-opixlig::image src="public/images/example.jpg" preset="stylized" />');
+
+    expect($html)
+        ->toContain('blur-10')
+        ->toContain('filt-greyscale')
+        ->toContain('width="300"');
+});

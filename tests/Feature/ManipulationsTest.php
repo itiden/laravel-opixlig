@@ -89,3 +89,279 @@ it('parses fill-max fit value correctly', function (): void {
         'fm' => 'webp',
     ]);
 });
+
+it('normalizes friendly aliases to glide keys', function (): void {
+    $result = Manipulations::normalize([
+        'width' => 800,
+        'height' => 600,
+        'format' => 'webp',
+        'quality' => 75,
+    ]);
+
+    expect($result)->toBe([
+        'w' => 800,
+        'h' => 600,
+        'fm' => 'webp',
+        'q' => 75,
+    ]);
+});
+
+it('passes through keys already in glide form', function (): void {
+    $result = Manipulations::normalize([
+        'w' => 800,
+        'h' => 600,
+        'fm' => 'avif',
+        'q' => 90,
+    ]);
+
+    expect($result)->toBe([
+        'w' => 800,
+        'h' => 600,
+        'fm' => 'avif',
+        'q' => 90,
+    ]);
+});
+
+it('passes through unknown keys unchanged', function (): void {
+    $result = Manipulations::normalize([
+        'width' => 400,
+        'blur' => 10,
+        'fit' => 'crop-center',
+        'placeholder' => 'blur',
+        'widths' => [384, 640],
+    ]);
+
+    expect($result)->toBe([
+        'w' => 400,
+        'blur' => 10,
+        'fit' => 'crop-center',
+        'placeholder' => 'blur',
+        'widths' => [384, 640],
+    ]);
+});
+
+it('normalizes mixed alias and glide keys', function (): void {
+    $result = Manipulations::normalize([
+        'width' => 800,
+        'fm' => 'webp',
+        'quality' => 75,
+        'fit' => 'crop-center',
+    ]);
+
+    expect($result)->toBe([
+        'w' => 800,
+        'fm' => 'webp',
+        'q' => 75,
+        'fit' => 'crop-center',
+    ]);
+});
+
+it('normalizes an empty array', function (): void {
+    expect(Manipulations::normalize([]))->toBe([]);
+});
+
+it('resolves empty preset with no overrides using config defaults', function (): void {
+    $result = Manipulations::resolve('');
+
+    expect($result)->toBe([
+        'w' => 0,
+        'h' => 0,
+        'fm' => 'webp',
+        'q' => 75,
+        'fit' => '',
+        'placeholder' => 'empty',
+        'widths' => [384, 640, 828, 1200, 1920, 2048, 3840],
+        'manipulations' => [
+            'fm' => 'webp',
+            'q' => 75,
+        ],
+    ]);
+});
+
+it('resolves valid preset using glide keys', function (): void {
+    config()->set('opixlig.presets.hero', [
+        'w' => 1200,
+        'h' => 675,
+        'fm' => 'avif',
+        'q' => 82,
+        'fit' => 'crop-center',
+        'placeholder' => 'blur',
+        'widths' => [640, 1200],
+    ]);
+
+    $result = Manipulations::resolve('hero');
+
+    expect($result)->toBe([
+        'w' => 1200,
+        'h' => 675,
+        'fm' => 'avif',
+        'q' => 82,
+        'fit' => 'crop-center',
+        'placeholder' => 'blur',
+        'widths' => [640, 1200],
+        'manipulations' => [
+            'fm' => 'avif',
+            'q' => 82,
+            'fit' => 'crop-center',
+        ],
+    ]);
+});
+
+it('resolves valid preset using friendly aliases', function (): void {
+    config()->set('opixlig.presets.aliases', [
+        'width' => 900,
+        'height' => 500,
+        'format' => 'jpg',
+        'quality' => 60,
+        'fit' => 'contain',
+        'placeholder' => 'blur',
+    ]);
+
+    $result = Manipulations::resolve('aliases');
+
+    expect($result)->toBe([
+        'w' => 900,
+        'h' => 500,
+        'fm' => 'jpg',
+        'q' => 60,
+        'fit' => 'contain',
+        'placeholder' => 'blur',
+        'widths' => [384, 640, 828, 1200, 1920, 2048, 3840],
+        'manipulations' => [
+            'fm' => 'jpg',
+            'q' => 60,
+            'fit' => 'contain',
+        ],
+    ]);
+});
+
+it('resolves by merging preset and overrides with overrides winning', function (): void {
+    config()->set('opixlig.presets.merge', [
+        'w' => 1200,
+        'h' => 600,
+        'fm' => 'webp',
+        'q' => 75,
+        'fit' => 'crop-center',
+        'placeholder' => 'blur',
+        'blur' => 5,
+        'filt' => 'greyscale',
+    ]);
+
+    $result = Manipulations::resolve('merge', [
+        'w' => 800,
+        'quality' => 90,
+        'format' => 'avif',
+        'fit' => 'contain',
+        'placeholder' => 'empty',
+        'blur' => 10,
+    ]);
+
+    expect($result)->toBe([
+        'w' => 800,
+        'h' => 600,
+        'fm' => 'avif',
+        'q' => 90,
+        'fit' => 'contain',
+        'placeholder' => 'empty',
+        'widths' => [384, 640, 828, 1200, 1920, 2048, 3840],
+        'manipulations' => [
+            'blur' => 10,
+            'filt' => 'greyscale',
+            'fm' => 'avif',
+            'q' => 90,
+            'fit' => 'contain',
+        ],
+    ]);
+});
+
+it('falls back to config defaults when preset and overrides are missing values', function (): void {
+    config()->set('opixlig.presets.partial', [
+        'w' => 333,
+        'h' => 222,
+    ]);
+
+    $result = Manipulations::resolve('partial');
+
+    expect($result)->toBe([
+        'w' => 333,
+        'h' => 222,
+        'fm' => 'webp',
+        'q' => 75,
+        'fit' => '',
+        'placeholder' => 'empty',
+        'widths' => [384, 640, 828, 1200, 1920, 2048, 3840],
+        'manipulations' => [
+            'fm' => 'webp',
+            'q' => 75,
+        ],
+    ]);
+});
+
+it('throws for undefined preset', function (): void {
+    expect(fn () => Manipulations::resolve('nonexistent'))
+        ->toThrow(\InvalidArgumentException::class);
+});
+
+it('keeps extra glide manipulations from preset in manipulations key', function (): void {
+    config()->set('opixlig.presets.effects', [
+        'w' => 500,
+        'blur' => 12,
+        'filt' => 'sepia',
+        'bri' => 15,
+    ]);
+
+    $result = Manipulations::resolve('effects');
+
+    expect($result['manipulations'])->toBe([
+        'blur' => 12,
+        'filt' => 'sepia',
+        'bri' => 15,
+        'fm' => 'webp',
+        'q' => 75,
+    ]);
+});
+
+it('uses preset widths instead of config defaults', function (): void {
+    config()->set('opixlig.presets.custom-widths', [
+        'widths' => [320, 768, 1024],
+    ]);
+
+    $result = Manipulations::resolve('custom-widths');
+
+    expect($result['widths'])->toBe([320, 768, 1024]);
+});
+
+it('ignores null overrides and keeps preset values', function (): void {
+    config()->set('opixlig.presets.null-overrides', [
+        'w' => 1200,
+        'h' => 800,
+        'fm' => 'avif',
+        'q' => 88,
+        'fit' => 'crop-center',
+        'placeholder' => 'blur',
+    ]);
+
+    $result = Manipulations::resolve('null-overrides', [
+        'w' => null,
+        'h' => null,
+        'fm' => null,
+        'q' => null,
+        'fit' => null,
+        'placeholder' => null,
+    ]);
+
+    expect($result)->toBe([
+        'w' => 1200,
+        'h' => 800,
+        'fm' => 'avif',
+        'q' => 88,
+        'fit' => 'crop-center',
+        'placeholder' => 'blur',
+        'widths' => [384, 640, 828, 1200, 1920, 2048, 3840],
+        'manipulations' => [
+            'fm' => 'avif',
+            'q' => 88,
+            'fit' => 'crop-center',
+        ],
+    ]);
+});

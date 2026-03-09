@@ -15,6 +15,7 @@
 - 📱 **Adaptive srcsets**: Creates optimized srcsets for both responsive and fixed-width images
 - 🔍 **Placeholder support**: Includes "blur" and "empty" placeholder options while images load
 - ⚙️ **Highly configurable**: Customize quality, widths, and more to fit your needs
+- 🎯 **Presets**: Define reusable image configurations for consistent sizing across your app
 - 🛠️ **Simple API**: Clean Blade component syntax that feels natural in your Laravel views
 
 ## Installation
@@ -59,6 +60,17 @@ return [
 
         // Default image format ('webp', 'avif', 'png', 'jpg', 'pjpg', 'gif', 'heic')
         'format' => 'webp',
+    ],
+
+    // Reusable image presets
+    'presets' => [
+        // 'thumbnail' => [
+        //     'width' => 150,
+        //     'height' => 150,
+        //     'quality' => 60,
+        //     'fit' => 'crop-center',
+        //     'placeholder' => 'blur',
+        // ],
     ],
 ];
 ```
@@ -138,12 +150,74 @@ Use the Blade component in your views:
 />
 ```
 
+### Presets
+
+Define reusable image configurations in your `config/opixlig.php`:
+
+```php
+'presets' => [
+    'avatar' => [
+        'width' => 64,
+        'height' => 64,
+        'quality' => 70,
+        'fit' => 'crop-center',
+        'placeholder' => 'blur',
+    ],
+    'hero' => [
+        'width' => 1200,
+        'height' => 630,
+        'format' => 'avif',
+        'quality' => 85,
+    ],
+    'og-image' => [
+        'w' => 1200,
+        'h' => 630,
+        'fm' => 'jpg',
+        'q' => 80,
+    ],
+],
+```
+
+Presets support both friendly names (`width`, `height`, `format`, `quality`) and Glide shorthand keys (`w`, `h`, `fm`, `q`). You can also include any [Glide manipulation](https://glide.thephpleague.com/2.0/api/quick-reference/) like `blur`, `filt`, or `sharp`, as well as `placeholder` and `widths`.
+
+Use a preset via the `preset` prop:
+
+```blade
+<x-opixlig::image src="public/images/profile.jpg" preset="avatar" alt="User avatar" />
+```
+
+Inline props override preset values, so you can use a preset as a base and tweak individual settings:
+
+```blade
+<x-opixlig::image
+    src="public/images/profile.jpg"
+    preset="avatar"
+    width="128"
+    height="128"
+    quality="90"
+    alt="Large avatar"
+/>
+```
+
+Presets can also define custom `widths` for responsive srcsets:
+
+```blade
+{{-- Config: 'banner' => ['w' => 1200, 'h' => 400, 'widths' => [400, 800, 1200]] --}}
+<x-opixlig::image src="public/images/banner.jpg" preset="banner" sizes="100vw" alt="Banner" />
+```
+
 ### Using the Helper Function
 
 You can also use the `img()` helper function directly:
 
 ```php
 $imageUrl = img('public/images/hero.jpg', 800, 600, ['fm' => 'webp', 'q' => 80])->url(['w' => 800]);
+```
+
+The helper also supports presets:
+
+```php
+$avatarUrl = img('public/images/profile.jpg', preset: 'avatar')->url(['w' => 64]);
 ```
 
 ## Advanced Usage
@@ -153,6 +227,7 @@ $imageUrl = img('public/images/hero.jpg', 800, 600, ['fm' => 'webp', 'q' => 80])
 | Prop          | Type   | Default                                | Description                                                                                                                                                                                                               |
 | ------------- | ------ | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | src           | string | ''                                     | Path to the source image (including disk name e.g., 'public/images/file.jpg')                                                                                                                                             |
+| preset        | string | ''                                     | Name of a preset defined in `config('opixlig.presets')`. Inline props override preset values.                                                                                                                             |
 | sizes         | string | ''                                     | Media query sizes attribute for responsive images                                                                                                                                                                         |
 | width         | number | ''                                     | Width of the image                                                                                                                                                                                                        |
 | height        | number | ''                                     | Height of the image                                                                                                                                                                                                       |
@@ -200,12 +275,6 @@ All supported Glide manipulations:
 | Orientation | `or`     | Rotation ('auto', '90', '180', '270')                      |
 | Background  | `bg`     | Background color (hex, e.g. 'fff')                         |
 | Border      | `border` | Border ('width,color,method')                              |
-
-You can also use the `img()` helper function directly:
-
-```php
-$imageUrl = img('public/images/hero.jpg', 800, 600, ['fm' => 'webp', 'q' => 80])->url(['w' => 800]);
-```
 
 ## How It Works
 

@@ -20,9 +20,9 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('opixlig.storage_folder', 'app/opixlig');
         $app['config']->set('opixlig.public_folder', 'images');
         $app['config']->set('opixlig.driver', 'gd');
-        $app['config']->set('opixlig.default_widths', [384, 640, 828, 1200, 1920, 2048, 3840]);
-        $app['config']->set('opixlig.default_placeholder', 'empty');
-        $app['config']->set('opixlig.default_quality', 75);
-        $app['config']->set('opixlig.default_format', 'webp');
+        $app['config']->set('opixlig.defaults.widths', [384, 640, 828, 1200, 1920, 2048, 3840]);
+        $app['config']->set('opixlig.defaults.placeholder', 'empty');
+        $app['config']->set('opixlig.defaults.quality', 75);
+        $app['config']->set('opixlig.defaults.format', 'webp');
     }
 }

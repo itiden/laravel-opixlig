@@ -305,6 +305,7 @@ it('throws for undefined preset', function (): void {
 it('keeps extra glide manipulations from preset in manipulations key', function (): void {
     config()->set('opixlig.presets.effects', [
         'w' => 500,
+        'h' => 500,
         'blur' => 12,
         'filt' => 'sepia',
         'bri' => 15,

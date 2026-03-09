@@ -46,17 +46,20 @@ return [
     // Image manipulation driver ('imagick' or 'gd')
     'driver' => 'imagick',
 
-    // Default widths for responsive images
-    'default_widths' => [384, 640, 828, 1200, 2048, 3840],
+    // Defaults for image output
+    'defaults' => [
+        // Default widths for responsive images
+        'widths' => [384, 640, 828, 1200, 2048, 3840],
 
-    // Default placeholder type ('empty' or 'blur')
-    'default_placeholder' => 'empty',
+        // Default placeholder type ('empty' or 'blur')
+        'placeholder' => 'empty',
 
-    // Default image quality (1-100)
-    'default_quality' => 75,
+        // Default image quality (1-100)
+        'quality' => 75,
 
-    // Default image format ('webp', 'avif', 'png', 'jpg', 'pjpg', 'gif', 'heic')
-    'default_format' => 'webp',
+        // Default image format ('webp', 'avif', 'png', 'jpg', 'pjpg', 'gif', 'heic')
+        'format' => 'webp',
+    ],
 ];
 ```
 
@@ -147,19 +150,19 @@ $imageUrl = img('public/images/hero.jpg', 800, 600, ['fm' => 'webp', 'q' => 80])
 
 ### Available Props
 
-| Prop          | Type   | Default                               | Description                                                                                                                                                                                                               |
-| ------------- | ------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| src           | string | ''                                    | Path to the source image (including disk name e.g., 'public/images/file.jpg')                                                                                                                                             |
-| sizes         | string | ''                                    | Media query sizes attribute for responsive images                                                                                                                                                                         |
-| width         | number | ''                                    | Width of the image                                                                                                                                                                                                        |
-| height        | number | ''                                    | Height of the image                                                                                                                                                                                                       |
-| loading       | string | 'lazy'                                | Image loading strategy ('lazy', 'eager', 'auto')                                                                                                                                                                          |
-| decoding      | string | 'async'                               | Image decoding strategy ('async', 'sync', 'auto')                                                                                                                                                                         |
-| quality       | number | config('opixlig.default_quality')     | Image quality (1-100)                                                                                                                                                                                                     |
-| placeholder   | string | config('opixlig.default_placeholder') | Placeholder type ('empty' or 'blur')                                                                                                                                                                                      |
-| format        | string | config('opixlig.default_format')      | Image format ('jpg', 'pjpg', 'png', 'gif', 'webp', 'avif', 'heic'*). *heic only supported with Imagick driver                                                                                                             |
-| fit           | string | ''                                    | How the image is fitted to its target dimensions. Values: 'contain', 'max', 'fill', 'fill-max', 'stretch', 'crop'. For crop positioning, use e.g. 'crop-center', 'crop-top', or Statamic focal points like 'crop-44-13-1' |
-| manipulations | array  | []                                    | Additional [Glide manipulations](https://glide.thephpleague.com/2.0/api/quick-reference/) as key-value pairs                                                                                                              |
+| Prop          | Type   | Default                                | Description                                                                                                                                                                                                               |
+| ------------- | ------ | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| src           | string | ''                                     | Path to the source image (including disk name e.g., 'public/images/file.jpg')                                                                                                                                             |
+| sizes         | string | ''                                     | Media query sizes attribute for responsive images                                                                                                                                                                         |
+| width         | number | ''                                     | Width of the image                                                                                                                                                                                                        |
+| height        | number | ''                                     | Height of the image                                                                                                                                                                                                       |
+| loading       | string | 'lazy'                                 | Image loading strategy ('lazy', 'eager', 'auto')                                                                                                                                                                          |
+| decoding      | string | 'async'                                | Image decoding strategy ('async', 'sync', 'auto')                                                                                                                                                                         |
+| quality       | number | config('opixlig.defaults.quality')     | Image quality (1-100)                                                                                                                                                                                                     |
+| placeholder   | string | config('opixlig.defaults.placeholder') | Placeholder type ('empty' or 'blur')                                                                                                                                                                                      |
+| format        | string | config('opixlig.defaults.format')      | Image format ('jpg', 'pjpg', 'png', 'gif', 'webp', 'avif', 'heic'*). *heic only supported with Imagick driver                                                                                                             |
+| fit           | string | ''                                     | How the image is fitted to its target dimensions. Values: 'contain', 'max', 'fill', 'fill-max', 'stretch', 'crop'. For crop positioning, use e.g. 'crop-center', 'crop-top', or Statamic focal points like 'crop-44-13-1' |
+| manipulations | array  | []                                     | Additional [Glide manipulations](https://glide.thephpleague.com/2.0/api/quick-reference/) as key-value pairs                                                                                                              |
 
 ### Image Manipulations
 

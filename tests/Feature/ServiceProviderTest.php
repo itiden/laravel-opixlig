@@ -7,8 +7,8 @@ use Itiden\Opixlig\Http\Controllers\ImageController;
 it('has merged opixlig configuration values available', function (): void {
     expect(Config::get('opixlig.storage_folder'))->toBe('app/opixlig')
         ->and(Config::get('opixlig.public_folder'))->toBe('images')
-        ->and(Config::get('opixlig.default_quality'))->toBe(75)
-        ->and(Config::get('opixlig.default_format'))->toBe('webp');
+        ->and(Config::get('opixlig.defaults.quality'))->toBe(75)
+        ->and(Config::get('opixlig.defaults.format'))->toBe('webp');
 });
 
 it('registers the opixlig view namespace', function (): void {

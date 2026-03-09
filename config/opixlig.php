@@ -12,4 +12,15 @@ return [
         'quality' => 75,
         'format' => 'webp',
     ],
+
+    'presets' => [
+        // Example:
+        // 'thumbnail' => [
+        //     'w' => 150,
+        //     'h' => 150,
+        //     'q' => 60,
+        //     'fit' => 'crop-center',
+        //     'placeholder' => 'blur',
+        // ],
+    ],
 ];

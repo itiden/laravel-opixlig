@@ -299,7 +299,7 @@ it('falls back to config defaults when preset and overrides are missing values',
 
 it('throws for undefined preset', function (): void {
     expect(fn () => Manipulations::resolve('nonexistent'))
-        ->toThrow(\InvalidArgumentException::class);
+        ->toThrow(InvalidArgumentException::class);
 });
 
 it('keeps extra glide manipulations from preset in manipulations key', function (): void {
@@ -369,12 +369,12 @@ it('ignores null overrides and keeps preset values', function (): void {
 
 it('throws when only width is provided without height', function (): void {
     expect(fn () => Manipulations::resolve('', ['w' => 800]))
-        ->toThrow(\InvalidArgumentException::class, 'both width and height');
+        ->toThrow(InvalidArgumentException::class, 'both width and height');
 });
 
 it('throws when only height is provided without width', function (): void {
     expect(fn () => Manipulations::resolve('', ['h' => 600]))
-        ->toThrow(\InvalidArgumentException::class, 'both width and height');
+        ->toThrow(InvalidArgumentException::class, 'both width and height');
 });
 
 it('does not throw when both width and height are zero', function (): void {
@@ -393,22 +393,22 @@ it('does not throw when both width and height are provided', function (): void {
 
 it('throws when widths is an empty array', function (): void {
     expect(fn () => Manipulations::resolve('', ['widths' => []]))
-        ->toThrow(\InvalidArgumentException::class, 'non-empty list');
+        ->toThrow(InvalidArgumentException::class, 'non-empty list');
 });
 
 it('throws when widths contains a non-integer value', function (): void {
     expect(fn () => Manipulations::resolve('', ['widths' => [320, 'large', 1024]]))
-        ->toThrow(\InvalidArgumentException::class, 'non-empty list of positive integers');
+        ->toThrow(InvalidArgumentException::class, 'non-empty list of positive integers');
 });
 
 it('throws when widths contains a zero value', function (): void {
     expect(fn () => Manipulations::resolve('', ['widths' => [0, 640]]))
-        ->toThrow(\InvalidArgumentException::class, 'non-empty list of positive integers');
+        ->toThrow(InvalidArgumentException::class, 'non-empty list of positive integers');
 });
 
 it('throws when widths contains a negative value', function (): void {
     expect(fn () => Manipulations::resolve('', ['widths' => [-100, 640]]))
-        ->toThrow(\InvalidArgumentException::class, 'non-empty list of positive integers');
+        ->toThrow(InvalidArgumentException::class, 'non-empty list of positive integers');
 });
 
 it('allows inline widths override to take precedence over preset widths', function (): void {

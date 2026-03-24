@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Storage;
 use Itiden\Opixlig\Utils\Manipulations;
 use League\Glide\ServerFactory;
 use League\Glide\Signatures\SignatureFactory;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 final class ImageController
 {
-    public function __invoke(Request $request, string $fullpath, string $manipulations, string $filename): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function __invoke(Request $request, string $fullpath, string $manipulations, string $filename): BinaryFileResponse
     {
         /** @var string $signKey */
         $signKey = Config::get('app.key');

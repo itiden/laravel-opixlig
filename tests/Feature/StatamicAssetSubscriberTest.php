@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Bus;
 use Itiden\Opixlig\Jobs\DeleteCachedImage;
 use Itiden\Opixlig\Listeners\StatamicAssetSubscriber;
@@ -38,7 +39,7 @@ it('skips non-image assets', function (): void {
 
 it('subscribes to Statamic asset events', function (): void {
     $subscriber = new StatamicAssetSubscriber;
-    $dispatcher = app(Illuminate\Events\Dispatcher::class);
+    $dispatcher = app(Dispatcher::class);
 
     $subscriber->subscribe($dispatcher);
 

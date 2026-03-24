@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\ViewException;
 
 it('renders an img tag with expected base attributes', function (): void {
     $html = Blade::render('<x-opixlig::image src="public/images/example.jpg" width="320" height="180" alt="Example image" />');
@@ -131,7 +133,7 @@ it('renders blur placeholder style attribute when placeholder is blur', function
     $image = (string) ob_get_clean();
     imagedestroy($resource);
 
-    \Illuminate\Support\Facades\Storage::disk('public')->put('blade-tests/photo.png', $image);
+    Storage::disk('public')->put('blade-tests/photo.png', $image);
 
     $html = Blade::render('<x-opixlig::image src="public/blade-tests/photo.png" width="200" height="100" placeholder="blur" />');
 
@@ -140,7 +142,7 @@ it('renders blur placeholder style attribute when placeholder is blur', function
         ->toContain('background-size:cover')
         ->toContain('background-position:center');
 
-    \Illuminate\Support\Facades\Storage::disk('public')->deleteDirectory('blade-tests');
+    Storage::disk('public')->deleteDirectory('blade-tests');
 });
 
 it('applies preset width and height to the image', function (): void {
@@ -210,15 +212,15 @@ it('uses preset widths for responsive srcset', function (): void {
 
 it('throws exception for undefined preset', function (): void {
     Blade::render('<x-opixlig::image src="public/images/example.jpg" preset="nonexistent" />');
-})->throws(Illuminate\View\ViewException::class, "Opixlig preset 'nonexistent' is not defined.");
+})->throws(ViewException::class, "Opixlig preset 'nonexistent' is not defined.");
 
 it('throws when only width is provided without height', function (): void {
     Blade::render('<x-opixlig::image src="public/images/example.jpg" width="800" />');
-})->throws(Illuminate\View\ViewException::class, 'Opixlig requires both width and height to be set together, or neither.');
+})->throws(ViewException::class, 'Opixlig requires both width and height to be set together, or neither.');
 
 it('throws when only height is provided without width', function (): void {
     Blade::render('<x-opixlig::image src="public/images/example.jpg" height="600" />');
-})->throws(Illuminate\View\ViewException::class, 'Opixlig requires both width and height to be set together, or neither.');
+})->throws(ViewException::class, 'Opixlig requires both width and height to be set together, or neither.');
 
 it('passes through extra glide manipulations from preset', function (): void {
     config()->set('opixlig.presets.stylized', [

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+use League\Glide\Signatures\SignatureException;
 
 it('serves a processed image with valid signature', function (): void {
     if (! function_exists('imagecreatetruecolor')) {
@@ -34,7 +35,7 @@ it('rejects requests with invalid signature', function (): void {
     $this->withoutExceptionHandling();
 
     $this->get("/{$publicFolder}/public/images/photo.jpg/fm-webp_q-75_w-800/photo.webp?s=invalidsignature");
-})->throws(\League\Glide\Signatures\SignatureException::class);
+})->throws(SignatureException::class);
 
 it('serves an image with multiple manipulations in the URL', function (): void {
     if (! function_exists('imagecreatetruecolor')) {

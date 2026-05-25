@@ -11,6 +11,7 @@
     'format' => null,
     'fit' => '',
     'manipulations' => [],
+    'version' => null,
 ])
 
 @php
@@ -27,7 +28,7 @@
         ...$manipulations,
     ], static fn ($value) => $value !== null));
 
-    $imgService = img($src, $resolved['w'], $resolved['h'], $resolved['manipulations']);
+    $imgService = img($src, $resolved['w'], $resolved['h'], $resolved['manipulations'], version: $version);
     $attrs = ImageAttributes::from($imgService, $resolved, $sizes);
 
     $width = $resolved['w'];

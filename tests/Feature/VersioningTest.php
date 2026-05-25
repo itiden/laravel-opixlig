@@ -122,6 +122,38 @@ it('gracefully handles mtime failure for missing file', function (): void {
     expect($path)->not->toContain('v-');
 });
 
+it('gracefully handles mtime when src has no disk separator', function (): void {
+    Config::set('opixlig.version', 'mtime');
+
+    $service = new ImageService(
+        src: 'nodisk',
+        width: 800,
+        height: 600,
+        baseManipulations: ['fm' => 'webp'],
+    );
+
+    $url = $service->url(['w' => 800]);
+    $path = parse_url($url, PHP_URL_PATH);
+
+    expect($path)->not->toContain('v-');
+});
+
+it('does not include version when config strategy is unknown', function (): void {
+    Config::set('opixlig.version', 'unknown-strategy');
+
+    $service = new ImageService(
+        src: 'public/images/hero.jpg',
+        width: 800,
+        height: 600,
+        baseManipulations: ['fm' => 'webp'],
+    );
+
+    $url = $service->url(['w' => 800]);
+    $path = parse_url($url, PHP_URL_PATH);
+
+    expect($path)->not->toContain('v-');
+});
+
 it('version changes the URL path producing a different cache location', function (): void {
     $service1 = new ImageService(
         src: 'public/images/hero.jpg',

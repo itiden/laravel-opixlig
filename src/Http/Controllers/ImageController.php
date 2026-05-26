@@ -24,6 +24,8 @@ final class ImageController
             $request->path(),
             array_merge($manipArray, ['s' => $request->query('s')])
         );
+
+        $glideManipulations = collect($manipArray)->except('v')->all();
         /** @var string $publicFolder */
         $publicFolder = Config::get('opixlig.public_folder');
         /** @var string $storageFolder */
@@ -44,7 +46,7 @@ final class ImageController
 
         File::ensureDirectoryExists($outputFolder);
 
-        $conversionResult = $cacheDir.'/'.$glideServer->makeImage($originalFilename, $manipArray);
+        $conversionResult = $cacheDir.'/'.$glideServer->makeImage($originalFilename, $glideManipulations);
         rename($conversionResult, "$outputFolder/$filename");
 
         return response()->file("$outputFolder/$filename");

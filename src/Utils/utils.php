@@ -5,7 +5,7 @@ use Itiden\Opixlig\Utils\Manipulations;
 
 if (! function_exists('img')) { // @codeCoverageIgnore
     /** @param array<string, string|int> $baseManipulations */
-    function img(string $src, int $width = 0, int $height = 0, array $baseManipulations = [], string $preset = ''): ImageService
+    function img(string $src, int $width = 0, int $height = 0, array $baseManipulations = [], string $preset = '', ?string $version = null): ImageService
     {
         if ($preset !== '') {
             $resolved = Manipulations::resolve($preset, array_filter([
@@ -23,6 +23,7 @@ if (! function_exists('img')) { // @codeCoverageIgnore
             'width' => $width,
             'height' => $height,
             'baseManipulations' => $baseManipulations,
+            'version' => $version,
         ]);
     }
 }

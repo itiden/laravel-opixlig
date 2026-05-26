@@ -13,6 +13,8 @@ return [
         'format' => 'webp',
     ],
 
+    'version' => null, // null = no auto-versioning, 'mtime' = use file modification time
+
     'presets' => [
         // Example:
         // 'thumbnail' => [

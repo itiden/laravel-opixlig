@@ -72,6 +72,9 @@ return [
         //     'placeholder' => 'blur',
         // ],
     ],
+
+    // Cache busting strategy: null (disabled) or 'mtime' (file modification time)
+    'version' => null,
 ];
 ```
 
@@ -222,6 +225,45 @@ The helper also supports presets:
 $avatarUrl = img('public/images/profile.jpg', preset: 'avatar')->url(['w' => 64]);
 ```
 
+### Cache Busting
+
+When an image is updated, browsers may serve a stale cached version. Opixlig supports cache busting by embedding a version identifier into the URL path, ensuring updated images get a new URL.
+
+#### Automatic versioning (mtime)
+
+Set the `version` config to `'mtime'` to automatically use the file's last modification time:
+
+```php
+// config/opixlig.php
+'version' => 'mtime',
+```
+
+Every time the source file changes, the generated URLs will change too, forcing browsers to fetch the new version.
+
+> **Note:** The `mtime` strategy requires a filesystem `lastModified()` call per URL generated. This works reliably on local disks but may add latency on remote filesystems (S3, GCS).
+
+#### Explicit versioning
+
+Use the `version` prop to manually control cache busting:
+
+```blade
+<x-opixlig::image
+    src="public/images/hero.jpg"
+    width="800"
+    height="600"
+    version="2"
+    alt="Hero image"
+/>
+```
+
+The explicit `version` prop always takes precedence over the config strategy. The value is sanitized to a URL-safe slug.
+
+The helper function also supports versioning:
+
+```php
+$imageUrl = img('public/images/hero.jpg', 800, 600, ['fm' => 'webp'], version: '2')->url(['w' => 800]);
+```
+
 ## Advanced Usage
 
 ### Available Props
@@ -231,8 +273,8 @@ $avatarUrl = img('public/images/profile.jpg', preset: 'avatar')->url(['w' => 64]
 | src           | string | ''                                     | Path to the source image (including disk name e.g., 'public/images/file.jpg')                                                                                                                                             |
 | preset        | string | ''                                     | Name of a preset defined in `config('opixlig.presets')`. Inline props override preset values.                                                                                                                             |
 | sizes         | string | ''                                     | Media query sizes attribute for responsive images                                                                                                                                                                         |
-| width         | number | ''                                     | Width of the image. Must be provided together with `height` — supplying only one throws an error.                                                                                                                          |
-| height        | number | ''                                     | Height of the image. Must be provided together with `width` — supplying only one throws an error.                                                                                                                          |
+| width         | number | ''                                     | Width of the image. Must be provided together with `height` — supplying only one throws an error.                                                                                                                         |
+| height        | number | ''                                     | Height of the image. Must be provided together with `width` — supplying only one throws an error.                                                                                                                         |
 | loading       | string | 'lazy'                                 | Image loading strategy ('lazy', 'eager', 'auto')                                                                                                                                                                          |
 | decoding      | string | 'async'                                | Image decoding strategy ('async', 'sync', 'auto')                                                                                                                                                                         |
 | quality       | number | config('opixlig.defaults.quality')     | Image quality (1-100)                                                                                                                                                                                                     |
@@ -240,6 +282,7 @@ $avatarUrl = img('public/images/profile.jpg', preset: 'avatar')->url(['w' => 64]
 | format        | string | config('opixlig.defaults.format')      | Image format ('jpg', 'pjpg', 'png', 'gif', 'webp', 'avif', 'heic'*). *heic only supported with Imagick driver                                                                                                             |
 | fit           | string | ''                                     | How the image is fitted to its target dimensions. Values: 'contain', 'max', 'fill', 'fill-max', 'stretch', 'crop'. For crop positioning, use e.g. 'crop-center', 'crop-top', or Statamic focal points like 'crop-44-13-1' |
 | manipulations | array  | []                                     | Additional [Glide manipulations](https://glide.thephpleague.com/2.0/api/quick-reference/) as key-value pairs                                                                                                              |
+| version       | string | null                                   | Explicit cache-busting version identifier. Overrides the `version` config strategy. Value is sanitized to a URL-safe slug.                                                                                                |
 
 ### Image Manipulations
 

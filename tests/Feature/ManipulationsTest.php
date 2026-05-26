@@ -90,6 +90,25 @@ it('parses fill-max fit value correctly', function (): void {
     ]);
 });
 
+it('roundtrips version with dashes in value', function (): void {
+    $original = [
+        'fm' => 'webp',
+        'q' => 75,
+        'v' => 'hello-world-2024',
+        'w' => 800,
+    ];
+
+    $string = Manipulations::stringify($original);
+    $parsed = Manipulations::parse($string);
+
+    expect($parsed)->toBe([
+        'fm' => 'webp',
+        'q' => '75',
+        'v' => 'hello-world-2024',
+        'w' => '800',
+    ]);
+});
+
 it('normalizes friendly aliases to glide keys', function (): void {
     $result = Manipulations::normalize([
         'width' => 800,
